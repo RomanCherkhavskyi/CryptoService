@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface Readable {
 
-    public List<Currency> readFile(String filePath);
+    List<Currency> readFile(String filePath);
 
-    public List<Currency> extractByUserPeriod(List<Currency> currencies, String startDate, String finishDate);
-
-
+    List<Currency> extractByUserPeriod(List<Currency> currencies, String startDate, String finishDate);
 }

@@ -17,16 +17,16 @@ public class UserDataCheck {
         return true;
     }
 
-    public boolean currencyCheck(int choiceCurrency) {
-        if (choiceCurrency <1 || choiceCurrency >5) {
+    public boolean currencyCheck(int selectCurrency) {
+        if (selectCurrency <1 || selectCurrency >5) {
             System.out.println("You entered non-correct number of currency");
             return false;
         }
         return true;
     }
 
-    public boolean functionCheck(int choiceFunction) {
-        if (choiceFunction <1 || choiceFunction >4){
+    public boolean functionCheck(int selectFunction) {
+        if (selectFunction <1 || selectFunction >4){
             System.out.println("You entered non-correct number of function");
             return false;
         }

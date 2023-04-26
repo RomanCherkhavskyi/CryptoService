@@ -10,15 +10,15 @@ public class Main {
 
 
     public static void main(String[] args) {
-        int choiceCurrency;
+        int selectCurrency;
         String startDate;
         String finishDate;
-        int choiceFunction;
+        int selectFunction;
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a number about currency you need\n1:BTC, 2:ETH, 3:DOGE, 4:LTC, 5:XRP");
-        choiceCurrency = Integer.parseInt(scanner.nextLine());
-        if (!new UserDataCheck().currencyCheck(choiceCurrency)) return;
+        selectCurrency = Integer.parseInt(scanner.nextLine());
+        if (!new UserDataCheck().currencyCheck(selectCurrency)) return;
 
 
         System.out.println("Please enter a start date and time in next format: yyyy-MM-dd'T'HH:mm");
@@ -32,13 +32,12 @@ public class Main {
 
 
         System.out.println("Please select what you need calculate:\n1:min, 2:max, 3:middle, 4:normal");
-        choiceFunction = Integer.parseInt(scanner.nextLine());
-        if (!new UserDataCheck().functionCheck(choiceFunction)) return;
+        selectFunction = Integer.parseInt(scanner.nextLine());
+        if (!new UserDataCheck().functionCheck(selectFunction)) return;
 
-        System.out.println(new Calculate().calculateUserNeed(choiceCurrency,
+        System.out.println(new Calculate().calculateUserNeed(selectCurrency,
                 startDate,
                 finishDate,
-                choiceFunction));
-
+                selectFunction));
     }
 }

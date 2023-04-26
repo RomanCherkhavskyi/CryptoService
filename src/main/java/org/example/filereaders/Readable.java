@@ -8,7 +8,7 @@ public interface Readable {
 
     public List<Currency> readFile(String filePath);
 
-    public List<Currency> findAll(List<Currency> currencies, String startDate, String finishDate);
+    public List<Currency> extractByUserPeriod(List<Currency> currencies, String startDate, String finishDate);
 
 
 }

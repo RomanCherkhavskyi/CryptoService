@@ -18,7 +18,6 @@ public class Calculate {
                 .orElse(null);
     }
 
-
     public Currency max(List<Currency> currencies) {
 
         return currencies.stream()
@@ -27,7 +26,7 @@ public class Calculate {
     }
 
 
-    public double middle(List<Currency> currencies) {
+    public double average(List<Currency> currencies) {
 
         return currencies.stream()
                 .mapToDouble(Currency::getPrice)
@@ -61,37 +60,27 @@ public class Calculate {
                 break;
         }
         if (choiceCurrency == 1 || choiceCurrency == 2) {
-
-            try {
-                currencies = new TXTFileReader().findAll(new TXTFileReader().readFile(filePath), startDate, finishDate);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
+            currencies = new TXTFileReader().extractByUserPeriod(new TXTFileReader().readFile(filePath), startDate, finishDate);
         } else {
-            try {
-                currencies = new CSVFileReader().findAll(new CSVFileReader().readFile(filePath), startDate, finishDate);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            currencies = new CSVFileReader().extractByUserPeriod(new CSVFileReader().readFile(filePath), startDate, finishDate);
         }
 
         switch (choiceFunction) {
             case 1:
                 result = String.valueOf(min(currencies));
-                System.out.println("Minimal currency is\n");
+                System.out.println("Minimal currency is");
                 break;
             case 2:
                 result = String.valueOf(max(currencies));
-                System.out.println("Maximal currency is\n");
+                System.out.println("Maximal currency is");
                 break;
             case 3:
-                result = String.valueOf(middle(currencies));
-                System.out.println("Middle currency value is\n");
+                result = String.valueOf(average(currencies));
+                System.out.println("Middle currency value is");
                 break;
             case 4:
                 result = String.valueOf(normal(currencies));
-                System.out.println("Normal currency value is\n");
+                System.out.println("Normal currency value is");
                 break;
         }
         return result;

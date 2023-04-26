@@ -1,13 +1,10 @@
 package org.example.functions;
 
-import com.opencsv.exceptions.CsvValidationException;
 import org.example.entity.Currency;
 import org.example.filereaders.CSVFileReader;
 import org.example.filereaders.FilePath;
 import org.example.filereaders.TXTFileReader;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -67,14 +64,14 @@ public class Calculate {
 
             try {
                 currencies = new TXTFileReader().findAll(new TXTFileReader().readFile(filePath), startDate, finishDate);
-            } catch (ParseException | IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
         } else {
             try {
                 currencies = new CSVFileReader().findAll(new CSVFileReader().readFile(filePath), startDate, finishDate);
-            } catch (ParseException | CsvValidationException | IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }

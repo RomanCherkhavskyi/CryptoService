@@ -12,7 +12,6 @@ public class Currency {
     }
 
 
-
     public String getSymbol() {
         return symbol;
     }
@@ -24,7 +23,6 @@ public class Currency {
     public String getTimestamp() {
         return timestamp;
     }
-
 
 
     @Override

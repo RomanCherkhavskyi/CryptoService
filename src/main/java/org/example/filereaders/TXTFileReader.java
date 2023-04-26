@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.example.entity.Currency;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -13,34 +14,60 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TXTFileReader {
-
-        public List<Currency> readFile(String filePath) throws IOException {
-            List<Currency> currencyList = new ArrayList<>();
-            Gson gson = new Gson();
-            BufferedReader bf = new BufferedReader(new FileReader(filePath));
-            String line;
-            while((line = bf.readLine()) != null){
-                currencyList.add(gson.fromJson(line, Currency.class));
-            }
-            return currencyList;
+public class TXTFileReader implements Readable {
+    @Override
+    public List<Currency> readFile(String filePath) {
+        List<Currency> currencyList = new ArrayList<>();
+        Gson gson = new Gson();
+        BufferedReader bf;
+        try {
+            bf = new BufferedReader(new FileReader(filePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-
-        public List<Currency> findAll(List<Currency> currencies, String startDate, String finishDate) throws ParseException {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            Date mindate = dateFormat.parse(startDate);
-            Date maxdate = dateFormat.parse(finishDate);
-            List<Currency> findList = new ArrayList<>();
-
-            for (Currency currency : currencies) {
-                Date date = dateFormat.parse(currency.getTimestamp());
-                if ((date.getTime() >= mindate.getTime()) && (date.getTime() <= maxdate.getTime())) {
-                    findList.add(currency);
-                }
+        String line;
+        while (true) {
+            try {
+                if ((line = bf.readLine()) == null) break;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            return findList;
-
+            currencyList.add(gson.fromJson(line, Currency.class));
         }
+        return currencyList;
+    }
+
+    @Override
+    public List<Currency> findAll(List<Currency> currencies, String startDate, String finishDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        Date mindate;
+        try {
+            mindate = dateFormat.parse(startDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Date maxdate;
+        try {
+            maxdate = dateFormat.parse(finishDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        List<Currency> findList = new ArrayList<>();
+
+        for (Currency currency : currencies) {
+            Date date;
+            try {
+                date = dateFormat.parse(currency.getTimestamp());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            if ((date.getTime() >= mindate.getTime()) && (date.getTime() <= maxdate.getTime())) {
+                findList.add(currency);
+            }
+        }
+        return findList;
+
+    }
 
 
 }

@@ -30,7 +30,6 @@ public class UserDataCheck {
     }
 
     public boolean functionCheck(int choiceFunction) {
-
         if (choiceFunction <1 || choiceFunction >4){
             System.out.println("You entered non-correct number of function");
             return false;

@@ -33,10 +33,8 @@ public class TXTFileReader implements Readable {
     @Override
     public List<Currency> extractByUserPeriod(List<Currency> currencies, String startDate, String finishDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        Date mindate;
-        mindate = dateFormat.parse(startDate);
-        Date maxdate;
-        maxdate = dateFormat.parse(finishDate);
+        Date mindate = dateFormat.parse(startDate);
+        Date maxdate = dateFormat.parse(finishDate);
 
         List<Currency> findList = new ArrayList<>();
         for (Currency currency : currencies) {

@@ -1,50 +1,34 @@
 package org.example.filereaders;
 
-import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.SneakyThrows;
 import org.example.entity.Currency;
-
-import java.io.FileReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CSVFileReader implements Readable {
-@SneakyThrows
+
+    /*
+    1)the same iisue with creator(GRASP)
+    2)why we parse it manualy? why don't we use a builder if we have one?
+    3)I don't think relying on the column number is a good idea. columns can be swapped. better to base on the headline.
+    4)what's the point of using the opencsv in this way? the only thing she does is skip the first row.
+    this can be done without a library and there will be no more code. will be better to use bean based solution
+    */
+    @SneakyThrows
     @Override
     public List<Currency> readFile(String filePath) {
-        CSVReader csvReader;
-            csvReader = new CSVReader(new FileReader(filePath));
-        List<Currency> csvCurrencyList = new ArrayList<>();
-            csvReader.skip(1);
-        String[] line;
-                while ((line = csvReader.readNext()) != null) {
-                    csvCurrencyList.add(
-                            new Currency(line[0],
-                                    line[1],
-                                    Double.parseDouble(line[2])));
-                }
-
-            csvReader.close();
-
-        return csvCurrencyList;
-    }
-@SneakyThrows
-    @Override
-    public List<Currency> extractByUserPeriod(List<Currency> currencies, String startDate, String finishDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        Date mindate = dateFormat.parse(startDate);
-        Date maxdate = dateFormat.parse(finishDate);
-        List<Currency> findList = new ArrayList<>();
-
-        for (Currency currency : currencies) {
-            long date = Long.parseLong(currency.getTimestamp());
-            if ((date >= mindate.getTime()) && (date <= maxdate.getTime())) {
-                findList.add(currency);
-            }
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            return new CsvToBeanBuilder<>(reader).withType(Currency.class).build().stream()
+                    .map(v->(Currency)v).collect(Collectors.toList());
         }
-        return findList;
     }
+    
+    /*
+    duplicated method with TXTFileReader class!!!
+    we must move it to superclass
+    */
 }
